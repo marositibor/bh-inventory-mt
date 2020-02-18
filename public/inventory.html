@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inventory</title>
+    <link rel="stylesheet" href="bootstrap.css" />
+    <script src="jquery.js"></script>
+    <script src="popper.js"></script>
+    <script src="bootstrap.js"></script>
+  </head>
+  <body>
+    <div id="APP" class="container">
+      <header class="row">
+        <div class="col-2 text-center border">
+          <span>Logo</span>
+        </div>
+
+        <div class="col-10 border">
+            <div>
+                <span>Termékek</span>
+            </div>
+        </div>
+      </header>
+      <div class="row">
+        <div class="col-2 border border">
+          <nav class="nav flex-column">
+            <a class="nav-link" href="#">Készletek</a>
+            <a class="nav-link active" href="#">Termékek</a>
+            <a class="nav-link" href="#">Csoportok</a>
+          </nav>
+        </div>
+        <div class="col-10 border p-3">
+          <table class="table">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Megnevezés</th>
+                <th scope="col">Csoport</th>
+                <th scope="col">Műveletek</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">1</th>
+                <td>Processzor</td>
+                <td>számítástechnika</td>
+                <td>
+                  <button type="button" class="btn btn-primary">
+                    Szerkesztés
+                  </button>
+                  <button type="button" class="btn btn-danger">Törlés</button>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">1</th>
+                <td>Processzor</td>
+                <td>számítástechnika</td>
+                <td>
+                  <button type="button" class="btn btn-primary">
+                    Szerkesztés
+                  </button>
+                  <button type="button" class="btn btn-danger">Törlés</button>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">1</th>
+                <td>Processzor</td>
+                <td>számítástechnika</td>
+                <td>
+                  <button type="button" class="btn btn-primary">
+                    Szerkesztés
+                  </button>
+                  <button type="button" class="btn btn-danger">Törlés</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="text-right">
+            <button type="button" class="btn btn-primary">Új termék</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
