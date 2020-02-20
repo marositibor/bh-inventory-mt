@@ -1,3 +1,40 @@
 <div class="container text-right footer d-flex flex-row justify-content-end align-items-center">
-    <button type="button" class="btn btn-primary">Új termék</button>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addProductModal">Új termék</button>
+</div>
+
+<div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="addProductModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addProductModalLabel">Új termék felvétele</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="./products">
+                    <div class="form-group">
+                        <label for="productName" class="col-form-label">Megnevezés</label>
+                        <input type="text" class="form-control" id="productName" name="name">
+                    </div>
+                    <div class="form-group">
+                        <label for="productCategory" class="col-form-label">Csoport:</label>
+                        <select class="custom-select" id="productCategory" name="category">
+                            <option selected>--- Válassz Csoportot ---</option>
+                            <option value="Számítástechnika">Számítástechnika</option>
+                            <option value="Konyhatechnika">Konyhatechnika</option>
+                            <option value="Fűtéstechnika">Fűtéstechnika</option>
+                            <option value="Árnyékolástechnika">Árnyékolástechnika</option>
+                        </select>
+                    </div>
+                
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Mégsem</button>
+                <button type="submit" class="btn btn-primary">Ok</button>
+            </div>
+            </form>
+        </div>
+    </div>
 </div>
