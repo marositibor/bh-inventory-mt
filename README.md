@@ -2,6 +2,6 @@
 
 Technologies/packages used:
 
-1. Web server: Express.js
-1. Database: sqlite3
-1. Template engine: Handlebars
+* Web server: Express.js
+* Database: sqlite3
+* Template engine: Handlebars
