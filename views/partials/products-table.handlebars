@@ -4,10 +4,9 @@
     <td class="text-center align-middle">{{this.name}}</td>
     <td class="text-center align-middle">{{this.category}}</td>
     <td class="text-center align-middle">
-        <button type="button" class="btn btn-info"  
-        data-id="{{this.id}}" data-category="{{this.category}}" data-name="{{this.name}}"
-        onclick="showEditModal()">Szerkesztés</button>
-        <button type="button" class="btn btn-danger" data-id={{this.id}}>Törlés</button>
+        <button type="button" class="btn btn-info" data-id="{{this.id}}" data-category="{{this.category}}"
+            data-name="{{this.name}}" data-desc="{{this.description}}" onclick="showEditModal()">Szerkesztés</button>
+        <button type="button" class="btn btn-danger" data-id={{this.id}} data-name="{{this.name}}" onclick="showDeleteModal()">Törlés</button>
     </td>
 </tr>
 {{/each}}
@@ -38,6 +37,10 @@
                             <option value="Árnyékolástechnika">Árnyékolástechnika</option>
                         </select>
                     </div>
+                    <div class="form-group">
+                        <label for="productDesc" class="col-form-label">Leírás</label>
+                        <textarea class="form-control" id="productDesc" name="product_desc"></textarea>
+                    </div>
             </div>
             <div class="modal-footer justify-content-between">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Mégse</button>
@@ -48,14 +51,54 @@
     </div>
 </div>
 
-<script>
-    function showEditModal() {
-        const productCategoryInput = document.querySelector('#productCategory');
-        const productNameInput = document.querySelector('#productName');
-        const editProductForm = document.querySelector('#editProductForm');
-        editProductForm.action = `./products/${event.target.dataset.id}`;
-        $('#editProductModal').modal();
-        productNameInput.value = event.target.dataset.name;
-        productCategoryInput.value = event.target.dataset.category;
-    }
-</script>
+<div class="modal fade" id="deleteProductModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editProductModalLabel">Termék törlése</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    Valóban törli: <span id="deleteProductName"></span> ?
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button class="btn btn-secondary" data-dismiss="modal">Mégse</button>
+                    <button class="btn btn-danger" id="deleteProductButton">Törlés</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showEditModal() {
+            const productCategoryInput = document.querySelector('#productCategory');
+            const productNameInput = document.querySelector('#productName');
+            const productDescInput = document.querySelector('#productDesc');
+            const editProductForm = document.querySelector('#editProductForm');
+            editProductForm.action = `./products/${event.target.dataset.id}`;
+
+            $('#editProductModal').modal();
+
+            productNameInput.value = event.target.dataset.name;
+            productCategoryInput.value = event.target.dataset.category;
+            productDescInput.value = event.target.dataset.desc;
+        }
+
+        function showDeleteModal() {
+            const productNameSpan = document.querySelector('#deleteProductName');
+            const deleteProductButton = document.querySelector('#deleteProductButton');
+            deleteProductButton.setAttribute( "onClick", `deleteProduct(${event.target.dataset.id})`);
+            $('#deleteProductModal').modal();
+
+            productNameSpan.innerText = event.target.dataset.name;
+        }
+
+        function deleteProduct(id) {
+            console.log("deleting product")
+            fetch(`/products/${id}`, {method: 'DELETE', redirect:'follow'}).then(response => window.location = response.url )
+        }
+
+    </script>
