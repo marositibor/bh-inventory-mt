@@ -1,11 +1,36 @@
+  
 {{#each items}}
 <tr>
-    <th class="text-center align-middle">{{this.rowid}}</th>
+    <th class="text-center align-middle">{{this.id}}</th>
     <td class="text-center align-middle">{{this.name}}</td>
-    <td class="text-center align-middle">{{this.category}}</td>
+    <td class="text-center align-middle">{{this.stock}}</td>
     <td class="text-center align-middle">
-        <button type="button" class="btn btn-info" data-id={{this.id}}>Szerkesztés</button>
-        <button type="button" class="btn btn-danger" data-id={{this.id}}>Törlés</button>
+        <button type="button" class="btn btn-info" data-id={{this.id}} data-stock={{this.stock}}
+            onclick="showStockModal()">Szerkesztés</button>
     </td>
 </tr>
 {{/each}}
+
+<div class="modal fade" id="stock_modal" tabindex="-1" role="dialog" aria-labelledby="stock_change_title"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header justify-content-center">
+                <h5 class="modal-title" id="new_prod_title">Új darabszám</h5>
+            </div>
+            <div class="modal-body">
+                <span>===TODO===</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showStockModal() {
+        $('#stock_modal').modal();
+        const stockQuantityInput = document.querySelector('#stock_quantity_input');
+        const stockItemIdInput = document.querySelector('.stock_item_id');
+        stockQuantityInput.value = event.target.dataset.stock;
+        stockItemIdInput.value = event.target.dataset.id;
+    }
+</script>

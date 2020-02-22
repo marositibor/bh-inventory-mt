@@ -1,11 +1,61 @@
 {{#each items}}
 <tr>
-    <th class="text-center align-middle">{{this.rowid}}</th>
+    <th class="text-center align-middle">{{this.id}}</th>
     <td class="text-center align-middle">{{this.name}}</td>
     <td class="text-center align-middle">{{this.category}}</td>
     <td class="text-center align-middle">
-        <button type="button" class="btn btn-info" data-id={{this.id}}>Szerkesztés</button>
+        <button type="button" class="btn btn-info"  
+        data-id="{{this.id}}" data-category="{{this.category}}" data-name="{{this.name}}"
+        onclick="showEditModal()">Szerkesztés</button>
         <button type="button" class="btn btn-danger" data-id={{this.id}}>Törlés</button>
     </td>
 </tr>
 {{/each}}
+
+<div class="modal fade" id="editProductModal" tabindex="-1" role="dialog" aria-labelledby="addProductModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addProductModalLabel">Termék szerkesztése</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editProductForm" method="POST" action="./products">
+                    <div class="form-group">
+                        <label for="productName" class="col-form-label">Megnevezés</label>
+                        <input type="text" class="form-control" id="productName" name="product_name">
+                    </div>
+                    <div class="form-group">
+                        <label for="productCategory" class="col-form-label">Csoport:</label>
+                        <select class="custom-select" id="productCategory" name="product_cat">
+                            <option selected>--- Válassz Csoportot ---</option>
+                            <option value="Számítástechnika">Számítástechnika</option>
+                            <option value="Konyhatechnika">Konyhatechnika</option>
+                            <option value="Fűtéstechnika">Fűtéstechnika</option>
+                            <option value="Árnyékolástechnika">Árnyékolástechnika</option>
+                        </select>
+                    </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Mégse</button>
+                <button type="submit" class="btn btn-primary">Szerkesztés</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showEditModal() {
+        const productCategoryInput = document.querySelector('#productCategory');
+        const productNameInput = document.querySelector('#productName');
+        const editProductForm = document.querySelector('#editProductForm');
+        editProductForm.action = `./products/${event.target.dataset.id}`;
+        $('#editProductModal').modal();
+        productNameInput.value = event.target.dataset.name;
+        productCategoryInput.value = event.target.dataset.category;
+    }
+</script>
