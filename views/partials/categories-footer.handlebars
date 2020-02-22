@@ -1,0 +1,29 @@
+<div class="container text-right footer d-flex flex-row justify-content-end align-items-center">
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addCategoryModal">Új
+        Csoport</button>
+</div>
+
+
+<div class="modal fade" id="addCategoryModal" tavindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addCategoryModalLabel">Új Csoport felvétele</h5>
+                <button type="button" class="close" data-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="./categories">
+                    <div class="form-group">
+                        <label for="categoryName" class="col-form-label">Csoport megnevezés</label>
+                        <input type="text" class="form-control" id="categoryName" name="category_name">
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Mégsem</button>
+                        <button type="submit" class="btn btn-primary">Ok</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

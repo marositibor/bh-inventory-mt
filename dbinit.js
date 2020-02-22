@@ -15,4 +15,12 @@ db.serialize(function () {
     db.run("INSERT INTO inventory(product_id, stock) VALUES (2, 13)");
     db.run("INSERT INTO inventory(product_id, stock) VALUES (3, 4)");
     db.run("INSERT INTO inventory(product_id, stock) VALUES (4, 2)");
+
+    db.run("CREATE TABLE IF NOT EXISTS categories (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(100) NOT NULL)");
+
+    db.run("INSERT INTO categories(name) VALUES ('Számítástechnika')");
+    db.run("INSERT INTO categories(name) VALUES ('Konyhatechnika')");
+    db.run("INSERT INTO categories(name) VALUES ('Fűtéstechnika')");
+    db.run("INSERT INTO categories(name) VALUES ('Árnyékolástechnika')");
+
 });

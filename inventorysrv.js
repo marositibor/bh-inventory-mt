@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 
 const productsRouter = require('./routes/products');
 const inventoryRouter = require('./routes/inventory');
+const categoriesRouter = require('./routes/categories');
 
 
 const db = new sqlite3.Database('inventory.db')
@@ -23,6 +24,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/products', productsRouter);
 
 app.use('/inventory', inventoryRouter);
+
+app.use('/categories', categoriesRouter);
 
 app.get('/', (req, res) => {
   res.redirect('/products')
