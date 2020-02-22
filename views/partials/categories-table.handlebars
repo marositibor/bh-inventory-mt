@@ -3,9 +3,48 @@
     <th class="text-center align-middle">{{this.id}}</th>
     <td class="text-center align-middle">{{this.name}}</td>
     <td class="text-center align-middle">
-        <button type="button" class="btn btn-info" data-id="{{this.id}}" data-category="{{this.category}}"
-            data-name="{{this.name}}" data-desc="{{this.description}}" onclick="">Szerkesztés</button>
-        <button type="button" class="btn btn-danger" data-id={{this.id}} data-name="{{this.name}}" onclick="">Törlés</button>
+        <button type="button" class="btn btn-info" data-id="{{this.id}}" data-name="{{this.name}}"
+            onclick="showEditModal({{this.id}})">Szerkesztés</button>
+        <button type="button" class="btn btn-danger" data-id={{this.id}} data-name="{{this.name}}"
+            onclick="">Törlés</button>
     </td>
 </tr>
+
 {{/each}}
+
+<div class="modal fade" id="editCategoryModal" tabindex="-1" role="dialog" aria-labelledby="editCategoryModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editCategoryModalLabel">Csoport Szerkesztése</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editProductForm" method="POST" action="">
+                    <div class="form-group">
+                        <label for="categoryName" class="col-form-label">Megnevezés</label>
+                        <input type="text" class="form-control" id="categoryName" name="category_name">
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Mégse</button>
+                        <button type="submit" class="btn btn-primary">Szerkesztés</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showEditModal(id) {
+        const categoryName = document.querySelector('#categoryName');
+        editProductForm.action = `./categories/${id}`;
+
+        $('#editCategoryModal').modal();
+
+        categoryName.value = event.target.dataset.name;
+    }
+</script>

@@ -22,10 +22,9 @@
                         <label for="productCategory" class="col-form-label">Csoport:</label>
                         <select class="custom-select" id="productCategory" name="product_cat">
                             <option selected>--- Válassz Csoportot ---</option>
-                            <option value="Számítástechnika">Számítástechnika</option>
-                            <option value="Konyhatechnika">Konyhatechnika</option>
-                            <option value="Fűtéstechnika">Fűtéstechnika</option>
-                            <option value="Árnyékolástechnika">Árnyékolástechnika</option>
+                            {{#each category}} 
+                            <option value="{{id}}">{{name}}</option>
+                            {{/each}}
                         </select>
                     </div>
                     <div class="form-group">
