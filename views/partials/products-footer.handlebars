@@ -20,7 +20,7 @@
                     </div>
                     <div class="form-group">
                         <label for="productCategory" class="col-form-label">Csoport:</label>
-                        <select class="custom-select" id="productCategory" name="product_cat">
+                        <select class="custom-select" id="productCategory" name="product_cat" multiple>
                             <option selected>--- Válassz Csoportot ---</option>
                             {{#each category}} 
                             <option value="{{id}}">{{name}}</option>
