@@ -1,4 +1,3 @@
-  
 {{#each items}}
 <tr>
     <th class="text-center align-middle">{{this.id}}</th>
@@ -6,7 +5,7 @@
     <td class="text-center align-middle">{{this.stock}}</td>
     <td class="text-center align-middle">
         <button type="button" class="btn btn-info" data-id={{this.id}} data-stock={{this.stock}}
-            onclick="showStockModal()">Szerkesztés</button>
+            data-name="{{this.name}}" onclick="showStockModal()">Szerkesztés</button>
     </td>
 </tr>
 {{/each}}
@@ -16,10 +15,19 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header justify-content-center">
-                <h5 class="modal-title" id="new_prod_title">Új darabszám</h5>
+                <h5 class="modal-title" id="inventory_edit_title">Új darabszám <span id="stock_item_name">:</span></h5>
             </div>
             <div class="modal-body">
-                <span>===TODO===</span>
+                <form id="edit_stock_form" method="POST" action="">
+                    <div class="form-group">
+                        <label for="categoryName" class="col-form-label">Daramszám</label>
+                        <input type="text" class="form-control" id="stock_quantity_input" name="stock_quantity">
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Mégse</button>
+                        <button type="submit" class="btn btn-primary">Szerkesztés</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -29,8 +37,12 @@
     function showStockModal() {
         $('#stock_modal').modal();
         const stockQuantityInput = document.querySelector('#stock_quantity_input');
-        const stockItemIdInput = document.querySelector('.stock_item_id');
+        const stockItemName = document.querySelector('#stock_item_name');
+        const editStockFrom = document.querySelector('#edit_stock_form');
+
+        editStockFrom.action = `./inventory/${event.target.dataset.id}`;
+
         stockQuantityInput.value = event.target.dataset.stock;
-        stockItemIdInput.value = event.target.dataset.id;
+        stockItemName.innerHTML = event.target.dataset.name;
     }
 </script>

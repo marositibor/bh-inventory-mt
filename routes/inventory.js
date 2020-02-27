@@ -25,8 +25,9 @@ router.get("/", (req, res) => {
   });
 });
 
-router.post("/", (req, res) => {
-  const { stock_quantity, stock_item_id } = req.body;
+router.post("/:id", (req, res) => {
+  const stock_item_id = req.params.id;
+  const {stock_quantity} = req.body;
   db.serialize(function() {
     if (stock_item_id !== undefined && stock_quantity !== undefined) {
       db.run(
@@ -36,11 +37,10 @@ router.post("/", (req, res) => {
             console.error(err.toString());
           }
         }
-      );
-    }
-  });
-
-  res.redirect("/inventory");
+        );
+      }
+    });
+    res.redirect("/inventory");
 });
 
 module.exports = router;
