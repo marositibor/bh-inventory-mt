@@ -6,7 +6,7 @@ const db = new sqlite3.Database("inventory.db");
 router.get("/", (req, res) => {
   const productsList = new Promise((resolve, reject) => {
     db.all(
-      "SELECT  products.id as id, products.name as name, group_concat(categories.name) as category, group_concat(categories.id) as category_id, products.description FROM product_to_category INNER JOIN products ON product_to_category.product_id = products.id INNER JOIN categories ON product_to_category.category_id = categories.id GROUP BY products.id",
+      "SELECT  products.id as id, products.name as name, group_concat(categories.name) as category, group_concat(categories.id) as category_id, products.description FROM products LEFT JOIN product_to_category ON product_to_category.product_id = products.id LEFT JOIN categories ON product_to_category.category_id = categories.id GROUP BY products.id",
       function(err, results) {
         if (err) {
           reject(err);
@@ -160,7 +160,7 @@ router.delete("/:id", (req, res) => {
         }
       });
     }
-    res.redirect("/products");
+    res.redirect(303,"/products");
   });
 });
 

@@ -55,4 +55,24 @@ router.post("/:id", (req, res) => {
     });
   });
 
+  router.delete("/:id", (req,res) => {
+    const category_id = req.params.id;
+
+    db.serialize(function() {
+      if (category_id !== undefined) {
+        db.run(`DELETE FROM categories WHERE id = ${+category_id}`, err => {
+          if (err != null) {
+            console.error(err.toString());
+          }
+        });
+        db.run(`DELETE FROM product_to_category WHERE category_id = ${+category_id}`, err => {
+          if (err != null) {
+            console.error(err.toString());
+          }
+        });
+      } 
+      res.redirect(303,"/categories");
+    });
+  });
+
 module.exports = router;

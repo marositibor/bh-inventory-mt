@@ -6,7 +6,7 @@
         <button type="button" class="btn btn-info" data-id="{{this.id}}" data-name="{{this.name}}"
             onclick="showEditModal({{this.id}})">Szerkesztés</button>
         <button type="button" class="btn btn-danger" data-id={{this.id}} data-name="{{this.name}}"
-            onclick="">Törlés</button>
+            onclick="showDeleteModal({{this.id}})">Törlés</button>
     </td>
 </tr>
 
@@ -38,13 +38,55 @@
     </div>
 </div>
 
+<div class="modal fade" id="deleteCategoryModal" tabindex="-1" role="dialog" aria-labelledby="deleteCategoryModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteCategoryModalLabel">Csoport Törlése</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    Valóban törli: <span id="deleteCategoryName"></span> ?
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button class="btn btn-secondary" data-dismiss="modal">Mégse</button>
+                    <button class="btn btn-danger" id="deleteCategoryButton">Törlés</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     function showEditModal(id) {
         const categoryName = document.querySelector('#categoryName');
+        const editProductForm = document.querySelector('#editProductForm');
         editProductForm.action = `./categories/${id}`;
 
         $('#editCategoryModal').modal();
 
         categoryName.value = event.target.dataset.name;
     }
+    
+    function showDeleteModal(id) {
+        const deleteCategoryName = document.querySelector('#deleteCategoryName');
+        const deleteCategoryButton = document.querySelector('#deleteCategoryButton');
+        deleteCategoryButton.setAttribute("onClick", `deleteCategory(${event.target.dataset.id})`);
+
+        $('#deleteCategoryModal').modal();
+
+        deleteCategoryName.innerHTML = event.target.dataset.name;
+    }
+
+    function deleteCategory(id) {
+        fetch(`/categories/${id}`, { method: 'DELETE'}).then(response => window.location = response.url)
+    }
+
+
+
+
 </script>
