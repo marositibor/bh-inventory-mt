@@ -8,10 +8,6 @@ img {
 	width: 100%;
 }
 
-.main-container {
-	height: 100%;
-}
-
 .site-content {
 	min-height: 80%;
 }
@@ -25,5 +21,5 @@ img {
 }
 
 .footer {
-	height: 15%;
+	height: 4m;
 }
