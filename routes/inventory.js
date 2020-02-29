@@ -6,7 +6,7 @@ const db = new sqlite3.Database("inventory.db");
 router.get("/", (req, res) => {
   new Promise((resolve, reject) => {
     db.all(
-      "SELECT products.id, products.name, inventory.stock FROM products JOIN inventory ON products.id = inventory.product_id",
+      "SELECT products.id, products.name, inventory.stock FROM products JOIN inventory ON products.id = inventory.product_id ORDER BY products.id",
       function(err, results) {
         if (err) {
           console.error(err.toString());
