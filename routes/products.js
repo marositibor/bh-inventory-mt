@@ -2,6 +2,7 @@ const router = require("express").Router();
 const sqlite3 = require("sqlite3").verbose();
 
 const db = new sqlite3.Database("inventory.db");
+const Product = require("../models/Product");
 
 router.get("/", (req, res) => {
   const productsList = new Promise((resolve, reject) => {
@@ -40,61 +41,9 @@ router.get("/", (req, res) => {
 router.post("/", (req, res) => {
   const { product_name, product_cat, product_desc } = req.body;
 
-  if (product_name && product_cat) {
-    db.serialize(function() {
-      db.run(
-        `INSERT INTO products(name, description) VALUES ("${product_name}", "${product_desc}")`,
-        err => {
-          if (err != null) {
-            console.error(err.toString());
-          }
-        }
-      );
-
-      db.get(
-        `SELECT id FROM products WHERE name = "${product_name}"`,
-        (err, result) => {
-          if (err != null) {
-            console.error(err.toString());
-          }
-
-          db.run(
-            `INSERT INTO inventory(product_id, stock) VALUES (${result.id}, 0)`,
-            err => {
-              if (err != null) {
-                console.error(err.toString());
-              }
-            }
-          );
-          
-          if(Array.isArray(product_cat)) {
-            product_cat.forEach(id => {
-              db.run(
-                `INSERT INTO product_to_category(product_id, category_id) VALUES (${+result.id}, ${+id})`,
-                err => {
-                  if (err != null) {
-                    console.error(err.toString());
-                  }
-                }
-              );
-            });
-          } else {
-            db.run(
-              `INSERT INTO product_to_category(product_id, category_id) VALUES (${+result.id}, ${+product_cat})`,
-              err => {
-                if (err != null) {
-                  console.error(err.toString());
-                }
-              }
-            );
-          }
-
-
-          res.redirect("/products");
-        }
-      );
-    });
-  }
+  const newProduct = new Product(product_name,product_cat,product_desc);
+  
+  newProduct.insert().then(res.redirect("/products"))
 });
 
 router.post("/:id", (req, res) => {
