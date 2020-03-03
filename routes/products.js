@@ -41,61 +41,23 @@ router.get("/", (req, res) => {
 router.post("/", (req, res) => {
   const { product_name, product_cat, product_desc } = req.body;
 
-  const newProduct = new Product(product_name,product_cat,product_desc);
-  
-  newProduct.insert().then(res.redirect("/products"))
+  const newProduct = new Product("",product_name,product_cat,product_desc);
+
+  newProduct.insert()
+  .then(resolution => resolution.insertCategories()
+  .then(res.redirect("/products")))
+
 });
 
 router.post("/:id", (req, res) => {
   const product_id = req.params.id;
   const { product_name, product_cat, product_desc } = req.body;
 
-  db.serialize(function() {
-    if (
-      product_id !== undefined &&
-      product_name !== undefined &&
-      product_cat !== undefined
-    ) {
-      db.run(
-        `UPDATE products SET name="${product_name}", description="${product_desc}" WHERE id = ${+product_id}`,
-        err => {
-          if (err != null) {
-            console.error(err.toString());
-          }
-        }
-      );
-      db.run(
-        `DELETE FROM product_to_category WHERE product_id = ${+product_id}`,
-        err => {
-          if (err != null) {
-            console.error(err.toString());
-          }
-        }
-      );
-      if(Array.isArray(product_cat)) {
-        product_cat.forEach(id => {
-          db.run(
-            `INSERT INTO product_to_category(product_id, category_id) VALUES (${+product_id}, ${+id})`,
-            err => {
-              if (err != null) {
-                console.error(err.toString());
-              }
-            }
-          );
-        });
-      } else {
-        db.run(
-          `INSERT INTO product_to_category(product_id, category_id) VALUES (${+product_id}, ${+product_cat})`,
-          err => {
-            if (err != null) {
-              console.error(err.toString());
-            }
-          }
-        );
-      }
-    }
-    res.redirect("/products");
-  });
+  const productToUpdate = new Product(+product_id,product_name,product_cat,product_desc); 
+
+  productToUpdate.update()
+  .then(resolution => resolution.insertCategories()
+  .then(res.redirect("/products")))
 });
 
 router.delete("/:id", (req, res) => {

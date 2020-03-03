@@ -10,7 +10,7 @@ class Category {
 
         const self = this;
 
-        const category_sql = "INSERT INTO products(name, description) VALUES (?,?)";
+        const category_sql = "INSERT INTO category(name) VALUES (?)";
 
         return new Promise(function (resolve) {
             db.run(category_sql, [self.name], function () {
