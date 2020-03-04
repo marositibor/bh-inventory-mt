@@ -62,17 +62,10 @@ router.post("/:id", (req, res) => {
 
 router.delete("/:id", (req, res) => {
   const product_id = req.params.id;
-
-  db.serialize(function() {
-    if (product_id !== undefined) {
-      db.run(`DELETE FROM products WHERE id = ${+product_id}`, err => {
-        if (err != null) {
-          console.error(err.toString());
-        }
-      });
-    }
-    res.redirect(303,"/products");
-  });
+  const productToDelete = new Product(+product_id);
+  
+  productToDelete.delete().then(res.redirect(303,"/products")) 
+  
 });
 
 module.exports = router;

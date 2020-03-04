@@ -2,10 +2,10 @@ const sqlite3 = require("sqlite3").verbose();
 const db = new sqlite3.Database("inventory.db");
 
 class Product {
-    constructor(id, name, categories, desclription) {
+    constructor(id, name, categories, description) {
         this.id = id || undefined;
-        this.name = name;
-        this.categories = Array.isArray(categories) ? categories : [categories];
+        this.name = name || "";
+        this.categories = Array.isArray(categories) ? categories : [categories] || [];
         this.description = description || "";
     }
 
@@ -17,12 +17,12 @@ class Product {
 
         return new Promise(function (resolve) {
             db.run(products_sql, [self.name, self.description], function (err) {
-                if(err){
+                if (err) {
                     console.log(err.message);
                 }
                 self.id = this.lastID;
-                db.run(inventory_sql,self.id, function (err) {
-                    if(err){
+                db.run(inventory_sql, self.id, function (err) {
+                    if (err) {
                         console.log(err.message);
                     }
                     console.log(`Row(s) updated: ${this.changes}`);
@@ -43,36 +43,58 @@ class Product {
         const insert_sql = "INSERT INTO product_to_category(product_id, category_id) VALUES " + values;
 
         return new Promise(function (resolve) {
-            db.serialize(()=>{
+            db.serialize(() => {
                 db.run(delete_sql, self.id)
-                .run(insert_sql, self.categories, function() {
-                    console.log(`Row(s) updated: ${this.changes}`);
-
-                    resolve(self);
-                })
+                    .run(insert_sql, self.categories, function () {
+                        console.log(`Row(s) updated: ${this.changes}`);
+                        resolve(self);
+                    })
             });
         })
     }
 
     update() {
-            const self = this;
+        const self = this;
 
-            const update_sql = `UPDATE products SET name=?, description=? WHERE id = ?`;
+        const update_sql = `UPDATE products SET name=?, description=? WHERE id = ?`;
 
-            return new Promise(function (resolve) {
-                db.run(update_sql, [self.name, self.description, self.id], function (err) {
-                    if(err) console.log(err.message);
-                    console.log(`Row(s) updated: ${this.changes}`);
-                    resolve(self);
+        return new Promise(function (resolve) {
+            db.run(update_sql, [self.name, self.description, self.id], function (err) {
+                if (err) console.log(err.message);
+                console.log(`Row(s) updated: ${this.changes}`);
+                resolve(self);
+            })
+        })
+    }
+
+    delete() {
+        const self = this;
+
+        const delete_product_sql = `DELETE FROM products WHERE id = ?`;
+        const delete_category_sql = "DELETE FROM product_to_category WHERE product_id = ?";
+        const delete_inventory_sql = "DELETE FROM inventory WHERE product_id = ?"
+
+        return new Promise(function (resolve) {
+            db.serialize(()=>{
+                db.run(delete_product_sql, [self.id], function (err) {
+                    if (err) console.log(err.message);
+                    console.log(`Product Row(s) updated: ${this.changes}`);
+                })
+                .run(delete_category_sql, [self.id], function (err) {
+                    if (err) console.log(err.message);
+                    console.log(`Category Row(s) updated: ${this.changes}`);
+                })
+                .run(delete_inventory_sql, [self.id], function (err) {
+                    if (err) console.log(err.message);
+                    console.log(`Inventory Row(s) updated: ${this.changes}`);
+                    resolve(true);
+                    console.log("products deleted")
                 })
             })
-
-
-        }
-    
-    delete() {
-
+        })
     }
+
 }
+
 
 module.exports = Product;
