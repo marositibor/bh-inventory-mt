@@ -10,7 +10,24 @@
             {{> sidebar }}
         </div>
         <div class="col-10 main-content container-fluid">
+            <div class="row">
+                <form id="filterForm" class="form-inline" method="GET" action="./products">
+                    <div class="form-group">
+                        <label for="filterProductCategory" class="col-form-label">Szűrés csoportra: </label>
+                        <select class="custom-select" id="filterProductCategory" name="product_cat" onchange="this.form.submit()">
+                            <option value="0">Összes csoport</option>
+                            {{#each category}}
+                            <option value="{{id}}">{{name}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                </form>
+            </div>
             {{> products-main}}
         </div>
     </div>
 </div>
+<script>
+            const filterProductCategory = document.querySelector('#filterProductCategory');
+            filterProductCategory.value = {{category_filter}};
+</script>

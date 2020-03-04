@@ -9,6 +9,30 @@ class Product {
         this.description = description || "";
     }
 
+    static getAllProducts(category){
+
+        const select = `SELECT  products.id as id, products.name as name, group_concat(categories.name) as category, group_concat(categories.id) as category_id, products.description FROM products LEFT JOIN product_to_category ON product_to_category.product_id = products.id LEFT JOIN categories ON product_to_category.category_id = categories.id `;
+        const where = category == 0 ? `WHERE categories.id IS NOT ? ` : `WHERE categories.id = ? `;
+        const group_by = `GROUP BY products.id`;
+
+        const select_sql = select + where + group_by
+
+        db.prepare(select_sql,)
+
+        return new Promise((resolve, reject) => {
+            db.all(select_sql, category,
+              function(err, results) {
+                if (err) {
+                  console.log(err.message)  
+                  reject(err);
+                } else {
+                  resolve(results);
+                }
+              }
+            );
+          });
+    }
+
     insert() {
         const self = this;
 

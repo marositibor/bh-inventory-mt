@@ -6,6 +6,19 @@ class Category {
         this.name = name;
     }
 
+    static getAllCategories() {
+        return new Promise((resolve, reject) => {
+            db.all("SELECT id,name from categories", function(err, results) {
+              if (err) {
+                console.log(err.message)
+                reject(err);
+              } else {
+                resolve(results);
+              }
+            });
+          }); 
+    }
+
     insert() {
 
         const self = this;
@@ -21,3 +34,5 @@ class Category {
 
     }
 }
+
+module.exports = Category;
