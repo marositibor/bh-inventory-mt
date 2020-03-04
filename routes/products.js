@@ -6,7 +6,7 @@ const Product = require("../models/Product");
 const Category = require("../models/Category");
 
 router.get("/", (req, res) => {
-  const {product_cat} = req.query;
+  const {product_cat = 0} = req.query;
   const productsList = Product.getAllProducts(product_cat);
   const categoriesList = Category.getAllCategories();
 

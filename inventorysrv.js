@@ -28,7 +28,7 @@ app.use('/inventory', inventoryRouter);
 app.use('/categories', categoriesRouter);
 
 app.get('/', (req, res) => {
-  res.redirect('/products?product_cat=0')
+  res.redirect('/products')
 })
 
 app.listen(PORT, () => console.log(`App is started and listening on port ${PORT}`));
