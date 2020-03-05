@@ -2,9 +2,30 @@
     <table class="table table-bordered table-hover">
         <thead class="thead-light">
             <tr>
-                <th class="text-center">ID</th>
-                <th class="text-center">Megnevezés</th>
-                <th class="text-center">Csoport</th>
+                <th class="text-center">
+                    {{#if sort_id}}
+                        <a href="/products?product_cat={{category_filter}}&sort_by=id&sort_order={{#if sort_asc}}DESC{{/if}}{{#unless sort_asc}}ASC{{/unless}}">ID {{#if sort_asc}}&#x25B2;{{/if}}{{#unless sort_asc}}&#x25BC;{{/unless}}</a>
+                    {{/if}}
+                    {{#unless sort_id}}
+                        <a href="/products?product_cat={{category_filter}}&sort_by=id&sort_order=ASC">ID</a>
+                    {{/unless}}
+                </th>
+                <th class="text-center">
+                    {{#if sort_name}}
+                        <a href="/products?product_cat={{category_filter}}&sort_by=name&sort_order={{#if sort_asc}}DESC{{/if}}{{#unless sort_asc}}ASC{{/unless}}">Megnevezés {{#if sort_asc}}&#x25B2;{{/if}}{{#unless sort_asc}}&#x25BC;{{/unless}}</a>
+                    {{/if}}
+                    {{#unless sort_name}}
+                        <a href="/products?product_cat={{category_filter}}&sort_by=name&sort_order=ASC">Megnevezés</a>
+                    {{/unless}}
+                </th>
+                <th class="text-center">
+                    {{#if sort_category}}
+                        <a href="/products?product_cat={{category_filter}}&sort_by=category&sort_order={{#if sort_asc}}DESC{{/if}}{{#unless sort_asc}}ASC{{/unless}}">Csoport {{#if sort_asc}}&#x25B2;{{/if}}{{#unless sort_asc}}&#x25BC;{{/unless}}</a>
+                    {{/if}}
+                    {{#unless sort_category}}
+                        <a href="/products?product_cat={{category_filter}}&sort_by=category&sort_order=ASC">Csoport</a>
+                    {{/unless}}
+                </th>
                 <th class="text-center">Műveletek</th>
             </tr>
         </thead>
@@ -13,5 +34,14 @@
         </tbody>
     </table>
 </div>
+<nav>
+  <ul class="pagination justify-content-center">
+    <li class="page-item {{#unless prevPage}}disabled{{/unless}}"><a class="page-link" href="/products?product_cat={{category_filter}}&page={{prevPage}}">Previous</a></li>
+{{#each pages}}
+    <li class="page-item {{#if isCurrentPage}}active{{/if}}"><a class="page-link" href="/products?product_cat={{../category_filter}}&page={{pageNumber}}">{{pageNumber}}</a></li>
+{{/each}}
+    <li class="page-item {{#if isLastPage}}disabled{{/if}}"><a class="page-link" href="/products?product_cat={{category_filter}}&page={{nextPage}}">Next</a></li>
+  </ul>
+</nav>
 
 {{> products-footer }}

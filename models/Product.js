@@ -9,28 +9,30 @@ class Product {
         this.description = description || "";
     }
 
-    static getAllProducts(category){
+    static getAllProducts(category, sort_by, sort_order, page) {
 
         const select = `SELECT  products.id as id, products.name as name, group_concat(categories.name) as category, group_concat(categories.id) as category_id, products.description FROM products LEFT JOIN product_to_category ON product_to_category.product_id = products.id LEFT JOIN categories ON product_to_category.category_id = categories.id `;
         const where = category == 0 ? `WHERE categories.id IS NOT ? ` : `WHERE categories.id = ? `;
-        const group_by = `GROUP BY products.id`;
+        const group_by = `GROUP BY products.id `;
+        const order_by = `ORDER BY ${sort_by} ${sort_order} `;
+        const limit = `LIMIT 30 OFFSET ${(page-1)*30}`;
 
-        const select_sql = select + where + group_by
+        const select_sql = select + where + group_by + order_by + limit;
 
-        db.prepare(select_sql,)
+        db.prepare(select_sql)
 
         return new Promise((resolve, reject) => {
-            db.all(select_sql, category,
-              function(err, results) {
-                if (err) {
-                  console.log(err.message)  
-                  reject(err);
-                } else {
-                  resolve(results);
+            db.all(select_sql, [category],
+                function (err, results) {
+                    if (err) {
+                        console.log(err.message)
+                        reject(err);
+                    } else {
+                        resolve(results);
+                    }
                 }
-              }
             );
-          });
+        });
     }
 
     insert() {
@@ -99,23 +101,32 @@ class Product {
         const delete_inventory_sql = "DELETE FROM inventory WHERE product_id = ?"
 
         return new Promise(function (resolve) {
-            db.serialize(()=>{
+            db.serialize(() => {
                 db.run(delete_product_sql, [self.id], function (err) {
                     if (err) console.log(err.message);
                     console.log(`Product Row(s) updated: ${this.changes}`);
                 })
-                .run(delete_category_sql, [self.id], function (err) {
-                    if (err) console.log(err.message);
-                    console.log(`Category Row(s) updated: ${this.changes}`);
-                })
-                .run(delete_inventory_sql, [self.id], function (err) {
-                    if (err) console.log(err.message);
-                    console.log(`Inventory Row(s) updated: ${this.changes}`);
-                    resolve(true);
-                    console.log("products deleted")
-                })
+                    .run(delete_category_sql, [self.id], function (err) {
+                        if (err) console.log(err.message);
+                        console.log(`Category Row(s) updated: ${this.changes}`);
+                    })
+                    .run(delete_inventory_sql, [self.id], function (err) {
+                        if (err) console.log(err.message);
+                        console.log(`Inventory Row(s) updated: ${this.changes}`);
+                        resolve(true);
+                        console.log("products deleted")
+                    })
             })
         })
+    }
+
+    static getProductsCount() {
+        return new Promise(function (resolve) {
+            db.get("SELECT count(id) as count FROM products", function(err,row) {
+                if (err) console.log(err.message);
+                resolve(row.count);
+            })
+        });
     }
 
 }
