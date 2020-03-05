@@ -17,6 +17,7 @@ router.get("/", (req, res) => {
   .then(() => {
     const pages_count = Math.floor(products_count/30)+1;
     const pages_array = []
+
     for (let i = 1; i <= pages_count; i++){
       pages_array.push({ 
         pageNumber: i,
@@ -42,7 +43,6 @@ router.get("/", (req, res) => {
       });
     });
   })
-  
 });
 
 router.post("/", (req, res) => {
